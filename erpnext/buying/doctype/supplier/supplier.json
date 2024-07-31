@@ -485,7 +485,7 @@
    "link_fieldname": "party"
   }
  ],
- "modified": "2024-05-08 18:02:57.342931",
+ "modified": "2024-07-20 22:28:01.104184",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Supplier",
@@ -501,6 +501,7 @@
   },
   {
    "email": 1,
+   "if_owner": 1,
    "print": 1,
    "read": 1,
    "report": 1,
@@ -512,6 +513,7 @@
    "delete": 1,
    "email": 1,
    "export": 1,
+   "if_owner": 1,
    "import": 1,
    "print": 1,
    "read": 1,

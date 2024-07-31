@@ -30,17 +30,12 @@ class Customer(TransactionBase):
 	from typing import TYPE_CHECKING
 
 	if TYPE_CHECKING:
-		from frappe.types import DF
-
-		from erpnext.accounts.doctype.allowed_to_transact_with.allowed_to_transact_with import (
-			AllowedToTransactWith,
-		)
+		from erpnext.accounts.doctype.allowed_to_transact_with.allowed_to_transact_with import AllowedToTransactWith
 		from erpnext.accounts.doctype.party_account.party_account import PartyAccount
-		from erpnext.selling.doctype.customer_credit_limit.customer_credit_limit import (
-			CustomerCreditLimit,
-		)
+		from erpnext.selling.doctype.customer_credit_limit.customer_credit_limit import CustomerCreditLimit
 		from erpnext.selling.doctype.sales_team.sales_team import SalesTeam
 		from erpnext.utilities.doctype.portal_user.portal_user import PortalUser
+		from frappe.types import DF
 
 		account_manager: DF.Link | None
 		accounts: DF.Table[PartyAccount]
@@ -85,6 +80,7 @@ class Customer(TransactionBase):
 		tax_id: DF.Data | None
 		tax_withholding_category: DF.Link | None
 		territory: DF.Link | None
+		warehouse: DF.Link | None
 		website: DF.Data | None
 	# end: auto-generated types
 
@@ -155,6 +151,22 @@ class Customer(TransactionBase):
 		if self.sales_team:
 			if sum(member.allocated_percentage or 0 for member in self.sales_team) != 100:
 				frappe.throw(_("Total contribution percentage should be equal to 100"))
+	def before_insert(self):
+		self.set_company()
+		self.create_customer_warehouse()
+
+	def create_customer_warehouse(self):
+		warehouse_name = self.customer_name
+		doc = frappe.get_doc({
+			"doctype": "Warehouse",
+			"warehouse_name": warehouse_name,
+			"parent_warehouse": "Customer - " + frappe.get_cached_value("Company", self.company, "abbr")
+		})
+		doc.insert()
+		self.warehouse = doc.name
+
+	def set_company(self):
+		self.company = frappe.db.get_default("Company")
 
 	@frappe.whitelist()
 	def get_customer_group_details(self):
@@ -355,6 +367,13 @@ class Customer(TransactionBase):
 		delete_contact_and_address("Customer", self.name)
 		if self.lead_name:
 			frappe.db.sql("update `tabLead` set status='Interested' where name=%s", self.lead_name)
+	
+	def after_delete(self):
+		self.delete_warehouse()
+
+	def delete_warehouse(self):
+		warehouse = frappe.get_doc("Warehouse", self.warehouse)
+		warehouse.delete()
 
 	def after_rename(self, olddn, newdn, merge=False):
 		if frappe.defaults.get_global_default("cust_master_name") == "Customer Name":
@@ -376,7 +395,36 @@ class Customer(TransactionBase):
 					frappe.bold(self.customer_name)
 				)
 			)
+   
+@frappe.whitelist()
+def send_to_customer(warehouse, items, send_or_receive):
+	items = frappe.json.loads(items)
+	if send_or_receive not in ['Send', 'Receive']:
+		frappe.throw("Invalid value for send_or_receive. Expected 'Send' or 'Receive'.")
 
+	stock_entry = frappe.new_doc("Stock Entry")
+	stock_entry.stock_entry_type = "To Customer"
+
+	if send_or_receive == 'Send':
+		stock_entry.source_warehouse = "Stores - AE"
+		stock_entry.target_warehouse = warehouse
+	elif send_or_receive == 'Receive':
+		stock_entry.source_warehouse = warehouse
+		stock_entry.target_warehouse = "Stores - AE"
+	# Create stock entry for each item
+	for item in items:
+		print(item)
+		# Create and append item
+		stock_entry_item = frappe.new_doc("Stock Entry Detail")
+		stock_entry_item.item_code = item.get('item_code')
+		stock_entry_item.qty = item.get('qty')
+		stock_entry_item.s_warehouse = stock_entry.source_warehouse
+		stock_entry_item.t_warehouse = stock_entry.target_warehouse
+		stock_entry.items.append(stock_entry_item)
+		
+		# Save and submit the stock entry
+		stock_entry.save()
+		stock_entry.submit()
 
 @deprecated
 def create_contact(contact, party_type, party, email):

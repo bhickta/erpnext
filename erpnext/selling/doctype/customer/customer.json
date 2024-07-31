@@ -16,6 +16,7 @@
   "customer_name",
   "customer_type",
   "customer_group",
+  "warehouse",
   "column_break0",
   "territory",
   "gender",
@@ -84,7 +85,9 @@
   "is_frozen",
   "disabled",
   "portal_users_tab",
-  "portal_users"
+  "portal_users",
+  "actions_tab",
+  "stock_entry"
  ],
  "fields": [
   {
@@ -105,6 +108,7 @@
    "depends_on": "eval:doc.customer_type!='Company'",
    "fieldname": "salutation",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Salutation",
    "options": "Salutation"
   },
@@ -124,11 +128,12 @@
    "depends_on": "eval:doc.customer_type != 'Company'",
    "fieldname": "gender",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Gender",
    "options": "Gender"
   },
   {
-   "default": "Company",
+   "default": "Individual",
    "fieldname": "customer_type",
    "fieldtype": "Select",
    "label": "Customer Type",
@@ -146,6 +151,7 @@
   {
    "fieldname": "lead_name",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "From Lead",
    "no_copy": 1,
    "oldfieldname": "lead_name",
@@ -169,12 +175,14 @@
   {
    "fieldname": "account_manager",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Account Manager",
    "options": "User"
   },
   {
    "fieldname": "customer_group",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Customer Group",
@@ -186,6 +194,7 @@
   {
    "fieldname": "territory",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Territory",
@@ -360,6 +369,7 @@
    "collapsible_depends_on": "customer_details",
    "fieldname": "more_info",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "More Information",
    "oldfieldtype": "Section Break",
    "options": "fa fa-file-text"
@@ -474,6 +484,7 @@
   {
    "fieldname": "opportunity_name",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "From Opportunity",
    "no_copy": 1,
    "options": "Opportunity",
@@ -487,11 +498,13 @@
   {
    "fieldname": "defaults_tab",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Defaults"
   },
   {
    "fieldname": "settings_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Settings"
   },
   {
@@ -499,6 +512,7 @@
    "collapsible_depends_on": "default_sales_partner",
    "fieldname": "sales_team_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Sales Team",
    "oldfieldtype": "Section Break",
    "options": "fa fa-group"
@@ -514,6 +528,7 @@
   {
    "fieldname": "dashboard_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Dashboard",
    "show_dashboard": 1
   },
@@ -534,11 +549,13 @@
   {
    "fieldname": "accounting_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Accounting"
   },
   {
    "fieldname": "tax_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Tax"
   },
   {
@@ -546,6 +563,7 @@
    "collapsible_depends_on": "is_internal_customer",
    "fieldname": "internal_customer_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Internal Customer"
   },
   {
@@ -559,6 +577,7 @@
   {
    "fieldname": "portal_users_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Portal Users"
   },
   {
@@ -570,6 +589,23 @@
   {
    "fieldname": "column_break_nwor",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse",
+   "read_only": 1
+  },
+  {
+   "fieldname": "actions_tab",
+   "fieldtype": "Tab Break",
+   "label": "Actions"
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Button",
+   "label": "Stock Entry"
   }
  ],
  "icon": "fa fa-user",
@@ -583,7 +619,7 @@
    "link_fieldname": "party"
   }
  ],
- "modified": "2024-05-08 18:03:20.716169",
+ "modified": "2024-07-20 15:05:07.074828",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",

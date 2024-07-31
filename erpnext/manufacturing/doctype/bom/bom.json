@@ -290,6 +290,7 @@
    "collapsible": 1,
    "fieldname": "scrap_section",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Scrap & Process Loss"
   },
   {
@@ -301,6 +302,7 @@
   {
    "fieldname": "costing",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Costing",
    "oldfieldtype": "Section Break"
   },
@@ -424,6 +426,7 @@
    "collapsible": 1,
    "fieldname": "website_section",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Website"
   },
   {
@@ -488,6 +491,7 @@
   {
    "fieldname": "section_break_21",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Operations"
   },
   {
@@ -530,6 +534,7 @@
   {
    "fieldname": "connections_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Connections",
    "show_dashboard": 1
   },
@@ -561,6 +566,7 @@
   {
    "fieldname": "more_info_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "More Info"
   },
   {
@@ -637,7 +643,7 @@
  "image_field": "image",
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-03 16:24:47.518411",
+ "modified": "2024-07-20 08:51:02.321975",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "BOM",

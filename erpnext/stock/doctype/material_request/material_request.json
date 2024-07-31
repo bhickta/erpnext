@@ -11,9 +11,9 @@
   "naming_series",
   "title",
   "material_request_type",
-  "customer",
   "company",
   "column_break_2",
+  "customer",
   "transaction_date",
   "schedule_date",
   "amended_from",
@@ -84,7 +84,6 @@
    "reqd": 1
   },
   {
-   "depends_on": "eval:doc.material_request_type==\"Customer Provided\"",
    "fieldname": "customer",
    "fieldtype": "Link",
    "label": "Customer",
@@ -278,6 +277,7 @@
    "label": "Items"
   },
   {
+   "fetch_from": "customer.warehouse",
    "fieldname": "set_warehouse",
    "fieldtype": "Link",
    "ignore_user_permissions": 1,
@@ -357,7 +357,7 @@
  "idx": 70,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-09-15 12:07:24.789471",
+ "modified": "2024-07-20 11:39:26.938792",
  "modified_by": "Administrator",
  "module": "Stock",
  "name": "Material Request",
