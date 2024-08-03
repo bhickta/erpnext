@@ -135,6 +135,15 @@ frappe.ui.form.on("Customer", {
 			frappe.contacts.render_address_and_contact(frm);
 
 			// custom buttons
+			frm.add_custom_button(
+				__("Stock Balance"),
+				function () {
+					frappe.set_route("query-report", "Stock Balance", {
+						customer: [frm.doc.name,],
+					});
+				},
+				__("View")
+			);
 
 			frm.add_custom_button(
 				__("Accounts Receivable"),
