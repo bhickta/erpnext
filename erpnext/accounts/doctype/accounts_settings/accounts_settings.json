@@ -238,7 +238,7 @@
    "options": "Days\nMonths"
   },
   {
-   "default": "0",
+   "default": "1",
    "fieldname": "delete_linked_ledger_entries",
    "fieldtype": "Check",
    "label": "Delete Accounting and Stock Ledger Entries on deletion of Transaction"
@@ -496,7 +496,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-07-26 06:48:52.714630",
+ "modified": "2024-08-03 18:23:19.110075",
  "modified_by": "Administrator",
  "module": "Accounts",
  "name": "Accounts Settings",
