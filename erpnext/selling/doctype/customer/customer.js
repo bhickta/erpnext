@@ -171,7 +171,7 @@ frappe.ui.form.on("Customer", {
 			frm.add_custom_button(
 				__("Stock Entry"),
 				() => {
-					frm.events.send_to_customer_dialogue({frm: frm});
+					frm.events.customer_stock_entry_dialogue({frm: frm});
 				},
 				("Create")
 			);
@@ -201,7 +201,7 @@ frappe.ui.form.on("Customer", {
 		if (frm.doc.lead_name) frappe.model.clear_doc("Lead", frm.doc.lead_name);
 	},
 
-	send_to_customer_dialogue(opts) {
+	customer_stock_entry_dialogue(opts) {
 		const d = new frappe.ui.Dialog({
 			title: "Customer Stock Entry",
 			fields: [
@@ -246,6 +246,7 @@ frappe.ui.form.on("Customer", {
 					items,
 					send_or_receive
 				})
+				d.hide();
 			}
 		});
 	

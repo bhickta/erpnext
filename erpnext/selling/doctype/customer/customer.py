@@ -399,8 +399,6 @@ class Customer(TransactionBase):
 		if not items:
 			return
 		items = frappe.parse_json(items)
-		for item in items:
-			item['customer'] = self.name
 		stock_entry = frappe.get_doc(
 			{
 				"doctype": "Stock Entry",
@@ -412,11 +410,20 @@ class Customer(TransactionBase):
 		if send_or_receive == "Send":
 			stock_entry.from_warehouse = warehouse
 			stock_entry.stock_entry_type = "Material Issue"
+			for item in stock_entry.items:
+				item.customer = self.name
 		else:
 			stock_entry.to_warehouse = warehouse
 			stock_entry.stock_entry_type = "Material Receipt"
-		stock_entry.insert()
-		stock_entry.submit()
+			for item in stock_entry.items:
+				item.customer = self.name
+		try:
+			stock_entry.insert()
+			stock_entry.submit()
+			frappe.msgprint(_("Stock Entry created successfully for customer {0}.").format(self.name), alert=True, indicator="green")
+		except Exception as e:
+			frappe.log_error("Failed to create Stock Entry", str(e), reference_doctype=self.doctype, reference_name=self.name)
+			raise
 
 @deprecated
 def create_contact(contact, party_type, party, email):
