@@ -159,8 +159,7 @@ class Customer(TransactionBase):
 		warehouse_name = self.customer_name
 		doc = frappe.get_doc({
 			"doctype": "Warehouse",
-			"warehouse_name": warehouse_name,
-			"parent_warehouse": "Customer - " + frappe.get_cached_value("Company", self.company, "abbr")
+			"warehouse_name": warehouse_name
 		})
 		doc.insert()
 		self.warehouse = doc.name
@@ -395,35 +394,28 @@ class Customer(TransactionBase):
 					frappe.bold(self.customer_name)
 				)
 			)
-   
-@frappe.whitelist()
-def send_to_customer(warehouse, items, send_or_receive):
-	items = frappe.json.loads(items)
-	if send_or_receive not in ['Send', 'Receive']:
-		frappe.throw("Invalid value for send_or_receive. Expected 'Send' or 'Receive'.")
-
-	stock_entry = frappe.new_doc("Stock Entry")
-	stock_entry.stock_entry_type = "To Customer"
-
-	if send_or_receive == 'Send':
-		stock_entry.source_warehouse = "Stores - AE"
-		stock_entry.target_warehouse = warehouse
-	elif send_or_receive == 'Receive':
-		stock_entry.source_warehouse = warehouse
-		stock_entry.target_warehouse = "Stores - AE"
-	# Create stock entry for each item
-	for item in items:
-		print(item)
-		# Create and append item
-		stock_entry_item = frappe.new_doc("Stock Entry Detail")
-		stock_entry_item.item_code = item.get('item_code')
-		stock_entry_item.qty = item.get('qty')
-		stock_entry_item.s_warehouse = stock_entry.source_warehouse
-		stock_entry_item.t_warehouse = stock_entry.target_warehouse
-		stock_entry.items.append(stock_entry_item)
-		
-		# Save and submit the stock entry
-		stock_entry.save()
+	@frappe.whitelist()
+	def make_to_customer_stock_entry(self, items, send_or_receive):
+		if not items:
+			return
+		items = frappe.parse_json(items)
+		for item in items:
+			item['customer'] = self.name
+		stock_entry = frappe.get_doc(
+			{
+				"doctype": "Stock Entry",
+				"naming_series": "STC-",
+				"items": items,
+			}
+		)
+		warehouse = frappe.db.get_value("Stock Settings", "Stock Settings", "default_warehouse")
+		if send_or_receive == "Send":
+			stock_entry.from_warehouse = warehouse
+			stock_entry.stock_entry_type = "Material Issue"
+		else:
+			stock_entry.to_warehouse = warehouse
+			stock_entry.stock_entry_type = "Material Receipt"
+		stock_entry.insert()
 		stock_entry.submit()
 
 @deprecated
@@ -857,3 +849,31 @@ def parse_full_name(full_name: str) -> tuple[str, str | None, str | None]:
 	last_name = names[-1] if len(names) > 1 else None
 
 	return first_name, middle_name, last_name
+
+def create_stock_entry(values):
+    # Extract values from dialog
+    customer = values.get('customer')
+    warehouse = values.get('warehouse')
+    items = values.get('items')
+
+    # Create a new Stock Entry
+    stock_entry = frappe.get_doc({
+        'doctype': 'Stock Entry',
+        'stock_entry_type': 'Material Transfer',
+        'to_warehouse': warehouse,
+        'items': []
+    })
+
+    for item in items:
+        stock_entry.append('items', {
+            'item_code': item.get('item_code'),
+            'qty': item.get('qty'),
+            's_warehouse': warehouse
+        })
+
+    # Save the Stock Entry
+    stock_entry.insert()
+    frappe.db.commit()
+
+    # Notify the user
+    frappe.msgprint(_('Stock Entry created successfully for customer {0}.'.format(customer)))

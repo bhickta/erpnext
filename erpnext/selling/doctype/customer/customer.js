@@ -123,10 +123,6 @@ frappe.ui.form.on("Customer", {
 			frm.set_value("loyalty_program_tier", null);
 		}
 	},
-
-	stock_entry(frm) {
-		send_to_customer_dialogue(frm)
-	},
 	
 	refresh: function (frm) {
 		if (frappe.defaults.get_default("cust_master_name") != "Naming Series") {
@@ -173,32 +169,13 @@ frappe.ui.form.on("Customer", {
 
 
 			frm.add_custom_button(
-				__("To Customer Entry"),
+				__("Stock Entry"),
 				() => {
-					console.log('called')
-					frappe.call({
-						method: "erpnext.selling.doctype.customer.customer.make_to_customer_stock_entry",
-						args: {
-							warehouse: frm.doc.warehouse,
-							no_of_crates: 20
-						},
-						callback: function(r) {
-							if (r.message) {
-								frappe.msgprint(__("Stock Entry created successfully"));
-							}
-						}
-					});
+					frm.events.send_to_customer_dialogue({frm: frm});
 				},
-				__("Create")
-			);			
+				("Create")
+			);
 
-			// frm.add_custom_button(
-			// 	__("Get Customer Group Details"),
-			// 	function () {
-			// 		frm.trigger("get_customer_group_details");
-			// 	},
-			// 	__("Actions")
-			// );
 
 			if (cint(frappe.defaults.get_default("enable_common_party_accounting"))) {
 				frm.add_custom_button(
@@ -223,14 +200,69 @@ frappe.ui.form.on("Customer", {
 	validate: function (frm) {
 		if (frm.doc.lead_name) frappe.model.clear_doc("Lead", frm.doc.lead_name);
 	},
-	get_customer_group_details: function (frm) {
-		frappe.call({
-			method: "get_customer_group_details",
-			doc: frm.doc,
-			callback: function () {
-				frm.refresh();
-			},
+
+	send_to_customer_dialogue(opts) {
+		const d = new frappe.ui.Dialog({
+			title: "Customer Stock Entry",
+			fields: [
+				{
+					label: 'Items',
+					fieldname: 'items',
+					fieldtype: 'Table',
+					fields: [
+						{
+							label: 'Item Code',
+							fieldname: 'item_code',
+							fieldtype: 'Link',
+							options: 'Item',
+							reqd: true,
+							in_list_view: 1,
+						},
+						{
+							label: 'Qty',
+							fieldname: 'qty',
+							fieldtype: 'Float',
+							reqd: true,
+							in_list_view: 1,
+						}
+					],
+					data: [],
+					reqd: true
+				},
+				{
+					label: 'Send/Receive',
+					fieldname: 'send_or_receive',
+					fieldtype: 'Select',
+					options: "\nSend\nReceive",
+					reqd: true
+				},
+			],
+			primary_action_label: "Create",
+			primary_action(values) {
+				const items = values.items || [];
+				const send_or_receive = values.send_or_receive || 'Send';
+				cur_frm.events.make_to_customer_stock_entry({
+					frm: cur_frm,
+					items,
+					send_or_receive
+				})
+			}
 		});
+	
+		d.show();
+	},
+
+	make_to_customer_stock_entry: function(opts) {
+		frappe.call({
+			method: "make_to_customer_stock_entry",
+			doc: opts.frm.doc,
+			args: {
+				items: opts.items,
+				send_or_receive: opts.send_or_receive
+			},
+			callback: function (r) {
+			}
+		})
 	},
 	show_party_link_dialog: function (frm) {
 		const dialog = new frappe.ui.Dialog({
@@ -275,63 +307,3 @@ frappe.ui.form.on("Customer", {
 		dialog.show();
 	},
 });
-
-function send_to_customer_dialogue(frm) {
-    console.log("Working");
-    const d = new frappe.ui.Dialog({
-        title: "Customer Stock Entry",
-        fields: [
-            {
-                label: 'Items',
-                fieldname: 'items',
-                fieldtype: 'Table',
-                fields: [
-                    {
-                        label: 'Item Code',
-                        fieldname: 'item_code',
-                        fieldtype: 'Link',
-                        options: 'Item',
-                        reqd: true,
-						in_list_view: 1,
-                    },
-                    {
-                        label: 'Qty',
-                        fieldname: 'qty',
-                        fieldtype: 'Float',
-                        reqd: true,
-						in_list_view: 1,
-                    }
-                ],
-                data: [],
-                reqd: true
-            },
-            {
-                label: 'Send/Receive',
-                fieldname: 'send_or_receive',
-                fieldtype: 'Select',
-                options: "\nSend\nReceive",
-                reqd: true
-            },
-        ],
-        primary_action_label: "Create",
-        primary_action(values) {
-            const items = values.items || [];
-            
-            frappe.call({
-                method: `erpnext.selling.doctype.customer.customer.send_to_customer`,
-                args: {
-					warehouse: frm.doc.warehouse,
-                    items: items,
-                    send_or_receive: values.send_or_receive,
-                },
-                callback: function(r) {
-					console.log(r)
-                    frappe.msgprint(__('Stock Entry processed successfully'));
-                    d.hide();
-                }
-            });
-        }
-    });
-
-    d.show();
-}
