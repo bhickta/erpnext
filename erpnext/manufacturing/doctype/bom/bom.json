@@ -302,7 +302,6 @@
   {
    "fieldname": "costing",
    "fieldtype": "Tab Break",
-   "hidden": 1,
    "label": "Costing",
    "oldfieldtype": "Section Break"
   },
@@ -643,7 +642,7 @@
  "image_field": "image",
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-20 08:51:02.321975",
+ "modified": "2024-08-02 16:03:36.786592",
  "modified_by": "Administrator",
  "module": "Manufacturing",
  "name": "BOM",
