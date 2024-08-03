@@ -85,9 +85,7 @@
   "is_frozen",
   "disabled",
   "portal_users_tab",
-  "portal_users",
-  "actions_tab",
-  "stock_entry"
+  "portal_users"
  ],
  "fields": [
   {
@@ -596,16 +594,6 @@
    "label": "Warehouse",
    "options": "Warehouse",
    "read_only": 1
-  },
-  {
-   "fieldname": "actions_tab",
-   "fieldtype": "Tab Break",
-   "label": "Actions"
-  },
-  {
-   "fieldname": "stock_entry",
-   "fieldtype": "Button",
-   "label": "Stock Entry"
   }
  ],
  "icon": "fa fa-user",
@@ -619,7 +607,7 @@
    "link_fieldname": "party"
   }
  ],
- "modified": "2024-08-02 14:08:03.190054",
+ "modified": "2024-08-03 15:56:40.062142",
  "modified_by": "Administrator",
  "module": "Selling",
  "name": "Customer",
