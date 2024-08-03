@@ -133,7 +133,7 @@ frappe.ui.form.on("Customer", {
 
 		if (!frm.doc.__islocal) {
 			frappe.contacts.render_address_and_contact(frm);
-			erpnext.fruit_packing.render_fruit_mark(frm);
+			erpnext.utils.render_fruit_mark(frm);
 
 			// custom buttons
 			frm.add_custom_button(
