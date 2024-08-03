@@ -1226,9 +1226,9 @@ $.extend(erpnext.stock.utils, {
 	},
 });
 
-frappe.provide("frappe.contacts")
+frappe.provide("erpnext.fruit_packing")
 
-$.extend(frappe.contacts, {
+$.extend(erpnext.fruit_packing, {
 	render_fruit_mark: function(frm) {
 		if (frm.fields_dict["fruit_mark"] && frm.doc.__onload && "fruit_mark_list" in frm.doc.__onload) {
 			$(frm.fields_dict["fruit_mark"].wrapper)
