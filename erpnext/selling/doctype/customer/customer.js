@@ -133,6 +133,7 @@ frappe.ui.form.on("Customer", {
 
 		if (!frm.doc.__islocal) {
 			frappe.contacts.render_address_and_contact(frm);
+			frappe.contacts.render_fruit_mark(frm);
 
 			// custom buttons
 			frm.add_custom_button(

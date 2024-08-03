@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-02 13:32:41.873063",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "selling_mark"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "selling_mark",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Selling Mark",
+   "options": "Fruit Mark",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-02 14:04:29.013141",
+ "modified_by": "Administrator",
+ "module": "Fruit Packing",
+ "name": "Selling Mark Detail",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

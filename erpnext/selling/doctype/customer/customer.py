@@ -88,7 +88,10 @@ class Customer(TransactionBase):
 		"""Load address and contacts in `__onload`"""
 		load_address_and_contact(self)
 		self.load_dashboard_info()
-
+		def load_fruit_mark(doc):
+			from erpnext.fruit_packing.doctype.fruit_mark.fruit_mark import get_fruit_mark_display_list
+			doc.set_onload("fruit_mark_list", get_fruit_mark_display_list(doc.doctype, doc.name))
+		load_fruit_mark(self)
 	def load_dashboard_info(self):
 		info = get_dashboard_info(self.doctype, self.name, self.loyalty_program)
 		self.set_onload("dashboard_info", info)

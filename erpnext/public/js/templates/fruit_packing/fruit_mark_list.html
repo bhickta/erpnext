@@ -1,0 +1,25 @@
+<div class="clearfix"></div>
+{% for (const fruit of fruit_mark_list) { %}
+	<div class="fruit-box">
+		<a
+			href="{%= frappe.utils.get_form_link('Fruit Mark', fruit.name) %}"
+			class="btn btn-xs btn-default edit-btn"
+			title="{%= __('Edit') %}"
+		>
+			<svg class="icon icon-xs">
+				<use href="#icon-edit"></use>
+			</svg>
+		</a>
+		<p>{%= fruit.display %}</p>
+	</div>
+{% } %}
+
+{% if (!fruit_mark_list.length) { %}
+	<p class="text-muted small">{%= __("No fruit added yet.") %}</p>
+{% } %}
+
+<p>
+	<button class="btn btn-xs btn-default btn-fruit-mark">
+		{{ __("New Fruit Mark") }}
+	</button>
+</p>

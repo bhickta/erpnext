@@ -1,0 +1,107 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-02 12:41:41.264401",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_jpfw",
+  "fruit",
+  "pack_type",
+  "column_break_vsod",
+  "grade",
+  "variety",
+  "column_break_umsi",
+  "qty",
+  "section_break_okgx",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_jpfw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Fruit Pack Entry Detail",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "columns": 2,
+   "default": "Apple",
+   "fieldname": "fruit",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Fruit",
+   "options": "Fruit",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_umsi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 1,
+   "default": "A",
+   "fieldname": "grade",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Grade",
+   "options": "Fruit Grade"
+  },
+  {
+   "fieldname": "section_break_okgx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "columns": 1,
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Qty",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "columns": 1,
+   "default": "Royal",
+   "fieldname": "variety",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Variety",
+   "options": "Fruit Variety"
+  },
+  {
+   "columns": 1,
+   "default": "Universal",
+   "fieldname": "pack_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Pack Type",
+   "options": "Fruit Pack Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_vsod",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-02 12:58:52.343444",
+ "modified_by": "Administrator",
+ "module": "Fruit Packing",
+ "name": "Fruit Pack Entry Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

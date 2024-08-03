@@ -1225,3 +1225,25 @@ $.extend(erpnext.stock.utils, {
 		});
 	},
 });
+
+frappe.provide("frappe.contacts")
+
+$.extend(frappe.contacts, {
+	render_fruit_mark: function(frm) {
+		if (frm.fields_dict["fruit_mark"] && frm.doc.__onload && "fruit_mark_list" in frm.doc.__onload) {
+			$(frm.fields_dict["fruit_mark"].wrapper)
+				.html(frappe.render_template("fruit_mark_list", frm.doc.__onload))
+				.find(".btn-fruit-mark")
+				.on("click", () => {
+					let new_doc = frappe.model.get_new_doc("Fruit Mark");
+					new_doc.links = [
+						{
+							"link_doctype": frm.doc.doctype,
+							"link_name": frm.doc.name
+						}
+					];
+					frappe.set_route('form', new_doc.doctype, new_doc.name);
+				});
+		}
+	},
+})

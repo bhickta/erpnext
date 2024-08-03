@@ -38,3 +38,5 @@ import "./sales_trends_filters.js";
 import "./purchase_trends_filters.js";
 
 // import { sum } from 'frappe/public/utils/util.js'
+
+import "./templates/fruit_packing/fruit_mark_list.html";

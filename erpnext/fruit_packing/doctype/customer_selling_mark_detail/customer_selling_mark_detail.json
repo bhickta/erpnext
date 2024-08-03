@@ -1,0 +1,49 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-02 13:08:51.922626",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "mark",
+  "section_break_okgx",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_okgx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Fruit Pack Entry Detail",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "mark",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Mark",
+   "options": "Selling Mark",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-02 13:09:40.961684",
+ "modified_by": "Administrator",
+ "module": "Fruit Packing",
+ "name": "Customer Selling Mark Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
